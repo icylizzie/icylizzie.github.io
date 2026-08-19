@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Natalie Li · Senior Product Manager</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+          },
+          colors: {
+            border: 'hsl(240, 5.9%, 90%)',
+            input: 'hsl(240, 5.9%, 90%)',
+            ring: 'hsl(240, 5.9%, 10%)',
+            background: 'hsl(0, 0%, 100%)',
+            foreground: 'hsl(240, 10%, 3.9%)',
+            primary: {
+              DEFAULT: 'hsl(243, 75%, 59%)',
+              foreground: 'hsl(0, 0%, 98%)',
+            },
+            muted: {
+              DEFAULT: 'hsl(240, 4.8%, 95.9%)',
+              foreground: 'hsl(240, 3.8%, 46.1%)',
+            },
+            accent: {
+              DEFAULT: 'hsl(240, 4.8%, 95.9%)',
+              foreground: 'hsl(240, 5.9%, 10%)',
+            },
+            card: {
+              DEFAULT: 'hsl(0, 0%, 100%)',
+              foreground: 'hsl(240, 10%, 3.9%)',
+            },
+          },
+          borderRadius: {
+            lg: '0.75rem',
+            md: '0.5rem',
+            sm: '0.375rem',
+          },
+          boxShadow: {
+            sm: '0 1px 2px 0 rgba(0,0,0,0.05)',
+            DEFAULT: '0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1)',
+            md: '0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #ffffff;
+      color: hsl(240, 10%, 3.9%);
+    }
+
+    .section-fade {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .section-fade.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-hover {
+      transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .card-hover:hover {
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+      border-color: hsl(240, 5.9%, 85%);
+    }
+
+    .btn-primary {
+      background: hsl(243, 75%, 59%);
+      color: white;
+      transition: background 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: hsl(243, 75%, 50%);
+      box-shadow: 0 4px 12px -2px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-outline {
+      border: 1px solid hsl(240, 5.9%, 90%);
+      background: white;
+      color: hsl(240, 10%, 3.9%);
+      transition: all 0.2s ease;
+    }
+
+    .btn-outline:hover {
+      background: hsl(240, 4.8%, 95.9%);
+      border-color: hsl(240, 5.9%, 85%);
+    }
+
+    .skill-bar {
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: hsl(240, 5.9%, 85%);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(240, 5.9%, 75%);
+    }
+
+    .tag-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.125rem 0.625rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border-radius: 9999px;
+      background: hsl(240, 4.8%, 95.9%);
+      color: hsl(240, 3.8%, 46.1%);
+      border: 1px solid hsl(240, 5.9%, 90%);
+    }
+
+    .tag-chip-accent {
+      background: hsl(243, 75%, 96%);
+      color: hsl(243, 75%, 45%);
+      border-color: hsl(243, 75%, 90%);
+    }
+  </style>
+</head>
+
+<body class="bg-background text-foreground antialiased">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav id="navbar"
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-transparent">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#home" class="text-lg font-bold text-foreground tracking-tight">
+        <span class="text-primary">Natalie Li</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-1">
+        <a href="#about"
+          class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md transition">简介</a>
+        <a href="#skills"
+          class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md transition">技能</a>
+        <a href="#experience"
+          class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md transition">经历</a>
+        <a href="#projects"
+          class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md transition">项目</a>
+        <a href="#education"
+          class="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md transition">教育</a>
+      </div>
+
+      <a href="#contact" class="hidden md:inline-flex btn-primary px-4 py-2 rounded-md text-sm font-medium">联系我</a>
+
+      <button id="menuBtn" class="md:hidden text-foreground text-xl p-2" aria-label="菜单">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-border px-6 py-3 space-y-1">
+      <a href="#about" class="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground">简介</a>
+      <a href="#skills" class="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground">技能</a>
+      <a href="#experience"
+        class="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground">经历</a>
+      <a href="#projects" class="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground">项目</a>
+      <a href="#education" class="block px-3 py-2 text-sm text-muted-foreground rounded-md hover:text-foreground">背景</a>
+      <a href="#contact" class="block px-3 py-2 text-sm font-medium text-primary">联系我</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="home" class="pt-32 pb-20 md:pt-40 md:pb-28">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col lg:flex-row items-center gap-16">
+        <div class="flex-1 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span class="text-xs font-medium text-muted-foreground">开放新机会</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-tight mb-4">
+            Natalie Li
+          </h1>
+          <p class="text-lg md:text-xl text-muted-foreground font-medium mb-4">
+            硕士 · 高级产品经理
+          </p>
+          <p class="text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed mb-8">
+            10年+ 商业和产品管理经验 · 擅长 0 到 1 产品搭建 ·
+            数据驱动决策 · AI 产品化实践 · 领导力· 协作精神
+          </p>
+
+          <div class="flex flex-wrap gap-3 justify-center lg:justify-start mb-10">
+            <a href="#projects"
+              class="btn-primary inline-flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-medium">
+              查看项目
+              <i class="fas fa-arrow-right text-xs"></i>
+            </a>
+            <a href="#contact"
+              class="btn-outline inline-flex items-center gap-2 px-6 py-2.5 rounded-md text-sm font-medium">
+              联系我
+            </a>
+          </div>
+
+          <div class="flex items-center gap-8 justify-center lg:justify-start">
+            <div>
+              <div class="text-2xl font-bold text-foreground">10+</div>
+              <div class="text-xs text-muted-foreground mt-0.5">年经验</div>
+            </div>
+            <div class="w-px h-10 bg-border"></div>
+            <div>
+              <div class="text-2xl font-bold text-foreground">5+</div>
+              <div class="text-xs text-muted-foreground mt-0.5">核心产品</div>
+            </div>
+            <div class="w-px h-10 bg-border"></div>
+            <div>
+              <div class="text-2xl font-bold text-foreground">95%+</div>
+              <div class="text-xs text-muted-foreground mt-0.5">满意度</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-shrink-0">
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURED PROJECTS (Homepage brief) ========== -->
+  <section id="featured-projects" class="py-16 md:py-20 border-t border-border bg-muted/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade flex items-end justify-between mb-8">
+        <div>
+          <span class="text-sm font-medium text-primary">精选项目</span>
+          <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">最近在做的事</h2>
+        </div>
+        <a href="#projects" class="text-sm font-medium text-primary hover:underline inline-flex items-center gap-1">
+          查看全部 <i class="fas fa-arrow-right text-xs"></i>
+        </a>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="featuredGrid">
+        <!-- 卡片由 JS 渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECT DETAIL MODAL ========== -->
+  <div id="projectModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-foreground/40 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div
+      class="relative bg-card rounded-lg border border-border shadow-lg max-w-2xl w-full max-h-[85vh] overflow-auto z-10"
+      id="modalContent">
+      <!-- Modal content by JS -->
+    </div>
+  </div>
+
+  <!-- ========== ABOUT ========== -->
+  <section id="about" class="py-16 md:py-24 border-t border-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade mb-10">
+        <span class="text-sm font-medium text-primary">简介</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">热爱产品 · 技术 · 设计的交汇</h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-6">
+          <div class="w-10 h-10 rounded-md bg-muted flex items-center justify-center mb-4">
+            <i class="fas fa-lightbulb text-primary"></i>
+          </div>
+          <h3 class="font-semibold text-foreground mb-2">产品思维</h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">
+            以用户价值为核心，通过数据和市场分析驱动产品决策，擅长从 0 到 1 的产品孵化与迭代。
+          </p>
+        </div>
+
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-6">
+          <div class="w-10 h-10 rounded-md bg-muted flex items-center justify-center mb-4">
+            <i class="fas fa-cogs text-primary"></i>
+          </div>
+          <h3 class="font-semibold text-foreground mb-2">技术理解</h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">
+            具备深厚复合背景（通信工程+技术经济），能与技术团队高效协作，快速理解方案可行性。
+          </p>
+        </div>
+
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-6">
+          <div class="w-10 h-10 rounded-md bg-muted flex items-center justify-center mb-4">
+            <i class="fas fa-users text-primary"></i>
+          </div>
+          <h3 class="font-semibold text-foreground mb-2">团队协作</h3>
+          <p class="text-sm text-muted-foreground leading-relaxed">
+            跨部门跨行业经验，曾在 IBM、TÜV 莱茵等国际化企业工作，具备全球化视野与协作能力。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== SKILLS ========== -->
+  <section id="skills" class="py-16 md:py-24 border-t border-border bg-muted/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade mb-10">
+        <span class="text-sm font-medium text-primary">技能</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">专业能力图谱</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="section-fade space-y-5">
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">产品规划与需求分析</span>
+              <span class="text-xs text-muted-foreground">95%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="95%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">数据分析与数据科学</span>
+              <span class="text-xs text-muted-foreground">90%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="90%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">AI 产品化实践</span>
+              <span class="text-xs text-muted-foreground">90%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="90%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">用户体验与交互设计</span>
+              <span class="text-xs text-muted-foreground">88%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="88%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-fade space-y-5">
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">项目管理与跨团队协作</span>
+              <span class="text-xs text-muted-foreground">92%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="92%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">商业化与市场运营</span>
+              <span class="text-xs text-muted-foreground">95%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="95%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">技术理解与评估</span>
+              <span class="text-xs text-muted-foreground">90%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="90%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between mb-2">
+              <span class="text-sm font-medium text-foreground">英语沟通与演讲</span>
+              <span class="text-xs text-muted-foreground">92%</span>
+            </div>
+            <div class="h-2 rounded-full bg-muted overflow-hidden">
+              <div class="skill-bar h-full rounded-full bg-primary" style="width: 0%" data-width="92%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-fade mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-lg border border-border bg-card p-4">
+          <h4 class="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            <i class="fas fa-code text-primary"></i> Python语言
+          </h4>
+          <div class="flex flex-wrap gap-1">
+            <span class="tag-chip text-[10px]">Requests</span>
+            <span class="tag-chip text-[10px]">BeautifulSoup</span>
+            <span class="tag-chip text-[10px]">Numpy</span>
+            <span class="tag-chip text-[10px]">Pandas</span>
+            <span class="tag-chip text-[10px]">Matplotlib</span>
+            <span class="tag-chip text-[10px]">Scipy</span>
+            <span class="tag-chip text-[10px]">Sklearn</span>
+          </div>
+        </div>
+        <div class="rounded-lg border border-border bg-card p-4">
+          <h4 class="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            <i class="fas fa-pencil-ruler text-primary"></i> 设计工具
+          </h4>
+          <div class="flex flex-wrap gap-1">
+            <span class="tag-chip text-[10px]">Figma</span>
+            <span class="tag-chip text-[10px]">Axure</span>
+            <span class="tag-chip text-[10px]">墨刀</span>
+            <span class="tag-chip text-[10px]">MasterGo</span>
+          </div>
+        </div>
+        <div class="rounded-lg border border-border bg-card p-4">
+          <h4 class="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            <i class="fas fa-certificate text-primary"></i> 专业认证
+          </h4>
+          <div class="flex flex-wrap gap-1">
+            <span class="tag-chip text-[10px] tag-chip-accent">Google UX</span>
+            <span class="tag-chip text-[10px] tag-chip-accent">Google PM</span>
+            <span class="tag-chip text-[10px] tag-chip-accent">IBM 数据科学</span>
+            <span class="tag-chip text-[10px] tag-chip-accent">IBM AI PM</span>
+          </div>
+        </div>
+        <div class="rounded-lg border border-border bg-card p-4">
+          <h4 class="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            <i class="fas fa-globe text-primary"></i> 语言与软实力
+          </h4>
+          <div class="flex flex-wrap gap-1">
+            <span class="tag-chip text-[10px]">CET-6</span>
+            <span class="tag-chip text-[10px] tag-chip-accent">BEC 高级</span>
+            <span class="tag-chip text-[10px]">中英文演讲</span>
+            <span class="tag-chip text-[10px] tag-chip-accent">SEP 金牌销售</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EXPERIENCE ========== -->
+  <section id="experience" class="py-16 md:py-24 border-t border-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade mb-10">
+        <span class="text-sm font-medium text-primary">工作经历</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">职业轨迹</h2>
+      </div>
+
+      <div class="relative">
+        <div class="absolute top-0 bottom-0 w-px bg-border left-1/2 -translate-x-1/2 hidden md:block"></div>
+
+        <div class="space-y-10">
+          <!-- 右侧 -->
+          <div class="section-fade relative md:grid md:grid-cols-2 md:gap-10 items-start">
+            <div
+              class="hidden md:block absolute left-1/2 top-5 -translate-x-1/2 w-3 h-3 rounded-full bg-primary ring-4 ring-white z-10">
+            </div>
+            <div class="md:col-start-2">
+              <div class="rounded-lg border border-border bg-card p-5 card-hover">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-sm font-semibold text-foreground">武汉数智云科技（中百集团）</span>
+                  <span class="tag-chip tag-chip-accent">产品主管</span>
+                </div>
+                <p class="text-sm text-muted-foreground mb-3">2025 — 2026</p>
+                <ul class="text-sm text-muted-foreground space-y-1.5">
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>重塑产品团队定位与工作模式，管理4名产品经理与2名设计师
+                  </li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>诊断产品-研发协同瓶颈，主导设计权责流程与规范</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>全面负责产品团队能力建模、工作流搭建与输出标准</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 左侧 -->
+          <div class="section-fade relative md:grid md:grid-cols-2 md:gap-10 items-start">
+            <div
+              class="hidden md:block absolute left-1/2 top-5 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-primary z-10">
+            </div>
+            <div class="md:col-start-1 md:col-end-2">
+              <div class="rounded-lg border border-border bg-card p-5 card-hover">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-sm font-semibold text-foreground">深圳蜂群文化传播</span>
+                  <span class="tag-chip tag-chip-accent">C端AI产品经理</span>
+                </div>
+                <p class="text-sm text-muted-foreground mb-3">2025 — 2025</p>
+                <ul class="text-sm text-muted-foreground space-y-1.5">
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>负责白桃星球C端社交知识付费产品规划与迭代</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>搭建AI问答和AI报告功能，用户留存率提升30%
+                  </li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>从零构建产品埋点数据统计框架</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧 -->
+          <div class="section-fade relative md:grid md:grid-cols-2 md:gap-10 items-start">
+            <div
+              class="hidden md:block absolute left-1/2 top-5 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-primary z-10">
+            </div>
+            <div class="md:col-start-2">
+              <div class="rounded-lg border border-border bg-card p-5 card-hover">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-sm font-semibold text-foreground">博看网（鼎森电子）</span>
+                  <span class="tag-chip tag-chip-accent">互联网产品经理</span>
+                </div>
+                <p class="text-sm text-muted-foreground mb-3">2019 — 2024</p>
+                <ul class="text-sm text-muted-foreground space-y-1.5">
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>公司最高级别优秀员工，演讲竞选前三</li>
+                  <li class="flex gap-2"><span
+                      class="text-primary mt-0.5 shrink-0">·</span>负责3000+机构客户的B2B2C教育产品，管理全系产品线</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>带领17人团队完成香港版从0到1，两月入驻12家机构
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 左侧 -->
+          <div class="section-fade relative md:grid md:grid-cols-2 md:gap-10 items-start">
+            <div
+              class="hidden md:block absolute left-1/2 top-5 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-primary z-10">
+            </div>
+            <div class="md:col-start-1 md:col-end-2">
+              <div class="rounded-lg border border-border bg-card p-5 card-hover">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-sm font-semibold text-foreground">德国TÜV莱茵技术</span>
+                  <span class="tag-chip tag-chip-accent">销售主任</span>
+                </div>
+                <p class="text-sm text-muted-foreground mb-3">2015 — 2018</p>
+                <ul class="text-sm text-muted-foreground space-y-1.5">
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>负责电子电器行业产品营销推广，筹办专家论坛</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>精细化用户分层管理，保证营销目标全部达成</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>与技术团队沟通，提升产品美誉度与口碑</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右侧 -->
+          <div class="section-fade relative md:grid md:grid-cols-2 md:gap-10 items-start">
+            <div
+              class="hidden md:block absolute left-1/2 top-5 -translate-x-1/2 w-3 h-3 rounded-full bg-white border-2 border-primary z-10">
+            </div>
+            <div class="md:col-start-2">
+              <div class="rounded-lg border border-border bg-card p-5 card-hover">
+                <div class="flex items-center gap-2 mb-1 flex-wrap">
+                  <span class="text-sm font-semibold text-foreground">IBM（中国）</span>
+                  <span class="tag-chip tag-chip-accent">软件销售顾问</span>
+                </div>
+                <p class="text-sm text-muted-foreground mb-3">2012 — 2014</p>
+                <ul class="text-sm text-muted-foreground space-y-1.5">
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>负责华东地区软件咨询服务业务拓展</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>踏遍五省，帮助团队提高销售量20%</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>协调部门沟通与合作伙伴体系规划</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section id="projects" class="py-16 md:py-24 border-t border-border bg-muted/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade mb-10">
+        <span class="text-sm font-medium text-primary">项目作品</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">全部项目详情</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6" id="projectsGrid">
+        <!-- 由 JS 渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== EDUCATION ========== -->
+  <section id="education" class="py-16 md:py-24 border-t border-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade mb-10">
+        <span class="text-sm font-medium text-primary">教育背景</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1">学历与认证</h2>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-6">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-graduation-cap text-primary"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-semibold text-foreground">华中科技大学</h3>
+                <span class="tag-chip">2009 - 2012</span>
+              </div>
+              <p class="text-sm text-muted-foreground mt-1">硕士 · 技术经济
+                <span class="tag-chip tag-chip-accent ml-1 font-medium">统招全日制</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-6">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-muted flex items-center justify-center flex-shrink-0">
+              <i class="fas fa-school text-primary"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h3 class="font-semibold text-foreground">桂林理工大学</h3>
+                <span class="tag-chip">2003 - 2007</span>
+              </div>
+              <p class="text-sm text-muted-foreground mt-1">本科 · 通信工程
+                <span class="tag-chip tag-chip-accent ml-1 font-medium">统招全日制</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-fade rounded-lg border border-border bg-card p-6">
+        <h3 class="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <i class="fas fa-certificate text-primary"></i>
+          专业认证
+        </h3>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            IBM 数据科学专业证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            Google UX 专业证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            Google 项目管理证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            IBM AI 产品经理证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            IBM SEP 金牌销售证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            BEC 剑桥商务英语高级
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            出版专业中级资格证书
+          </div>
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            <i class="fas fa-check-circle text-primary text-xs"></i>
+            IBM 全球销售学院毕业证
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact" class="py-16 md:py-24 border-t border-border bg-muted/30">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <div class="section-fade">
+        <span class="text-sm font-medium text-primary">联系</span>
+        <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1 mb-3">让我们聊聊你的下一个项目</h2>
+        <p class="text-muted-foreground max-w-lg mx-auto mb-8">
+          如果你有合作意向、项目咨询，或者只是想聊聊产品和 AI，欢迎联系。
+        </p>
+      </div>
+
+      <div class="section-fade flex justify-center mb-8">
+        <a href="mailto:icylizzieli@163.com"
+          class="btn-primary inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium">
+          <i class="fas fa-envelope"></i>
+          发送邮件
+        </a>
+      </div>
+
+      <p class="section-fade text-sm text-muted-foreground mt-2">
+        <i class="fas fa-envelope text-primary mr-1.5"></i>
+        icylizzieli@163.com
+      </p>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="border-t border-border py-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <span class="font-bold text-foreground tracking-tight">Natalie Li</span>
+          <span class="text-sm text-muted-foreground">高级产品经理</span>
+        </div>
+        <p class="text-xs text-muted-foreground">© <span id="year"></span> Natalie Li. All rights reserved.</p>
+        <a href="#home"
+          class="text-sm text-muted-foreground hover:text-foreground transition inline-flex items-center gap-1">
+          返回顶部 <i class="fas fa-arrow-up text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <button id="backToTop"
+    class="fixed bottom-6 right-6 w-10 h-10 btn-primary rounded-md items-center justify-center z-50 opacity-0 invisible transition-all"
+    aria-label="返回顶部">
+    <i class="fas fa-arrow-up text-sm"></i>
+  </button>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script>
+    // ===== 项目数据 =====
+    const projects = [
+      {
+        id: 1,
+        icon: 'fas fa-exchange-alt',
+        iconBg: 'bg-primary/10',
+        title: '电商分账系统建设',
+        role: '产品经理兼项目负责人',
+        period: '2025.11 — 2026.04',
+        tags: ['C端', '财务', '0→1'],
+        summary: '主导抱抱生活、通联支付、昂捷三方分账系统从0到1落地，构建合规高效的分账体系。',
+        content: '主导并推动了抱抱生活、通联支付、昂捷三方分账系统从0到1的落地实施。深入分析平台在普通商品、卡商品及券类业务中的分账时点不规范、线下核销数据孤岛、营销成本分摊复杂等核心痛点，设计了涵盖"支付分账、券类核销、财务对账"三大场景的全链路闭环方案。协调三方完成了接口开发、规则配置、数据交互标准制定及联合测试验收，确保了业务流、资金流、数据流的统一。',
+        metrics: [
+          '订单流水与资金流水勾兑率 ≥ 99%',
+          '彻底解决分账混乱与财务对账繁琐的历史难题',
+          '满足公司上市前的财务合规硬性要求'
+        ]
+      },
+      {
+        id: 2,
+        icon: 'fas fa-robot',
+        iconBg: 'bg-primary/10',
+        title: '星座社交AI功能模块建设',
+        role: '产品经理兼项目负责人',
+        period: '2025.02 — 2025.10',
+        tags: ['AI', 'C端', '社交'],
+        summary: '主导AI聊天机器人落地，将头部IP人格数字化，打造高频互动的星座社交空间。',
+        content: '深入洞察星座用户的核心诉求，主导AI聊天机器人的落地。将公司头部IP人格进行数字化植入，打造高信任度的拟人化交互体验。规划并整合了星盘解析、合盘分析、塔罗牌、星骰等多元玄学工具的AI化功能，为用户提供从即时问答到深度解析的全场景互动。协调算法与研发团队，完成知识库搭建、插件集成及体验闭环优化。',
+        metrics: [
+          '七日留存率提升 30%',
+          '超 60% 用户在首周内使用AI功能',
+          '验证了"AI+垂直文化社区"的商业可行性'
+        ]
+      },
+      {
+        id: 3,
+        icon: 'fas fa-store',
+        iconBg: 'bg-primary/10',
+        title: '线上商城和服务体系从0到1开发',
+        role: '产品经理兼项目负责人',
+        period: '2024.07 — 2024.12',
+        tags: ['C端', '电商', '0→1'],
+        summary: '带领团队从无到有开发商城和服务平台，实现客户业务从0到1的跨越。',
+        content: '基于市场调研结果，设计创新的产品模式，确保线上商品和服务体系能够满足客户需求。制定详细的服务流程，涵盖方案设计、项目实施、售后服务等环节。带领团队从无到有开发商城小程序、商城管理系统、服务平台小程序、服务后台系统，并根据客户反馈不断优化产品功能和性能。',
+        metrics: [
+          '客户满意度提升至 95% 以上',
+          '成功构建完整的能源商品和服务体系',
+          '帮助客户在能源市场建立独特竞争优势'
+        ]
+      },
+      {
+        id: 4,
+        icon: 'fas fa-users-cog',
+        iconBg: 'bg-primary/10',
+        title: '人事系统从0到1开发',
+        role: '产品经理兼项目负责人',
+        period: '2023.05 — 2023.11',
+        tags: ['内部产品', 'HRMS', '0→1'],
+        summary: '从0到1完成公司内部人事系统开发，涵盖考勤、招聘、员工关系等模块。',
+        content: '负责项目整体规划与执行，确保项目按期完成并满足预期目标。领导跨部门团队，协调各方资源，推动项目高效运作。设计并实现行政前台管理模块，优化日常行政工作流程。开发招聘培训管理功能，提升员工培训质量与招聘效率。构建员工关系管理系统，加强内部沟通与员工满意度。',
+        metrics: [
+          '考勤自动化减少培养前台的时间成本，节约3个月人力资源',
+          '引入数据报表自动化，大幅减轻月度统计工作量',
+          '为公司内部人事管理树立新标杆'
+        ]
+      },
+      {
+        id: 5,
+        icon: 'fas fa-language',
+        iconBg: 'bg-primary/10',
+        title: '香港繁体内容产品从0到1开发',
+        role: '产品经理兼项目负责人',
+        period: '2021.08 — 2022.08',
+        tags: ['B2B2C', '本地化', '0→1'],
+        summary: '全面负责香港繁体阅读产品从概念到上线，带领17人团队完成0到1。',
+        content: '作为项目负责人，全面负责香港繁体阅读产品从概念到上线的全过程，领导并协调17位项目成员，高效推进项目进度。主导构建"繁体版数据库"，精心筛选并翻译校对优质中文内容。搭建专为香港市场专属服务器架构，确保数据处理的高效与安全，实施用户数据的独立管理，符合香港地区数据保护法规要求。',
+        metrics: [
+          '成功实现12所中小学全面对接',
+          '创新性引入资源呈现方式多样化选择',
+          '构建统计后台，实现学校实时监控使用数据'
+        ]
+      }
+    ];
+
+    // ===== 渲染首页精选项目 =====
+    function renderFeatured() {
+      const grid = document.getElementById('featuredGrid');
+      if (!grid) return;
+      grid.innerHTML = projects.slice(0, 3).map(p => `
+        <div class="section-fade card-hover rounded-lg border border-border bg-card p-5 cursor-pointer" onclick="openModal(${p.id})">
+          <div class="flex items-start gap-3 mb-3">
+            <div class="w-10 h-10 rounded-md ${p.iconBg} flex items-center justify-center flex-shrink-0">
+              <i class="${p.icon} text-primary"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-foreground text-sm truncate">${p.title}</h3>
+              <p class="text-xs text-muted-foreground">${p.period}</p>
+            </div>
+          </div>
+          <p class="text-xs text-muted-foreground line-clamp-2 mb-3">${p.summary}</p>
+          <div class="flex items-center justify-between">
+            <div class="flex flex-wrap gap-1">
+              ${p.tags.slice(0, 2).map(t => `<span class="tag-chip text-[10px]">${t}</span>`).join('')}
+            </div>
+            <span class="text-xs text-primary font-medium inline-flex items-center gap-1 hover:underline">
+              详情 <i class="fas fa-chevron-right text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ===== 渲染完整项目列表 =====
+    function renderProjects() {
+      const grid = document.getElementById('projectsGrid');
+      if (!grid) return;
+      grid.innerHTML = projects.map(p => `
+        <div class="section-fade card-hover rounded-lg border border-border bg-card overflow-hidden cursor-pointer group" onclick="openModal(${p.id})">
+          <!-- 顶部彩条 + 图标 -->
+          <div class="px-6 pt-5 pb-3 flex flex-col md:flex-row md:items-center gap-3 border-b border-border/60 bg-muted/30">
+            <div class="w-10 h-10 rounded-md ${p.iconBg} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition">
+              <i class="${p.icon} text-primary text-lg"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-semibold text-foreground truncate">${p.title}</h3>
+              <p class="text-xs text-muted-foreground mt-0.5">${p.period}</p>
+            </div>
+            <span class="tag-chip tag-chip-accent text-xs self-start md:self-auto">${p.role}</span>
+          </div>
+          <!-- 内容区 -->
+          <div class="px-6 py-5">
+            <p class="text-sm text-muted-foreground leading-relaxed mb-4">${p.summary}</p>
+            <div class="flex items-center justify-between">
+              <div class="flex flex-wrap gap-1.5">
+                ${p.tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
+              </div>
+              <span class="text-sm text-primary font-medium inline-flex items-center gap-1 hover:underline">
+                详情 <i class="fas fa-chevron-right text-xs"></i>
+              </span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ===== Modal =====
+    function openModal(id) {
+      const p = projects.find(x => x.id === id);
+      if (!p) return;
+      const modal = document.getElementById('projectModal');
+      const content = document.getElementById('modalContent');
+      content.innerHTML = `
+        <div class="p-6 border-b border-border flex items-center justify-between">
+          <div class="flex items-start md:items-center gap-3 flex-wrap">
+            <div class="w-10 h-10 rounded-md ${p.iconBg} flex items-center justify-center">
+              <i class="${p.icon} text-primary"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-foreground">${p.title}</h3>
+              <p class="text-xs text-muted-foreground">${p.period}</p>
+              <span class="tag-chip tag-chip-accent text-xs mt-1 inline-block">${p.role}</span>
+            </div>
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-md hover:bg-muted flex items-center justify-center text-muted-foreground">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="p-6 space-y-5">
+          <div class="flex flex-wrap gap-2">
+            ${p.tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-foreground mb-2">项目内容</h4>
+            <p class="text-sm text-muted-foreground leading-relaxed">${p.content}</p>
+          </div>
+          <div>
+            <h4 class="text-sm font-semibold text-foreground mb-2">项目业绩</h4>
+            <ul class="space-y-2">
+              ${p.metrics.map(m => `<li class="flex gap-2 text-sm text-muted-foreground"><i class="fas fa-check-circle text-primary mt-0.5"></i>${m}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('projectModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    // ===== 初始化 =====
+    renderFeatured();
+    renderProjects();
+
+    // 键盘 ESC 关闭 modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ===== 原有交互 =====
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuBtn.querySelector('i');
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuBtn.querySelector('i').classList.add('fa-bars');
+        menuBtn.querySelector('i').classList.remove('fa-times');
+      });
+    });
+
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('border-border', 'shadow-sm');
+      } else {
+        navbar.classList.remove('border-border', 'shadow-sm');
+      }
+    });
+
+    const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.querySelectorAll?.('.skill-bar').forEach(bar => {
+            const w = bar.getAttribute('data-width');
+            if (w) bar.style.width = w;
+          });
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+    document.querySelectorAll('.section-fade').forEach(el => observer.observe(el));
+
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        backToTop.classList.remove('opacity-0', 'invisible');
+        backToTop.classList.add('opacity-100', 'visible', 'flex');
+      } else {
+        backToTop.classList.add('opacity-0', 'invisible');
+        backToTop.classList.remove('opacity-100', 'visible', 'flex');
+      }
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>
