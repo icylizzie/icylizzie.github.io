@@ -276,6 +276,18 @@
     </div>
   </div>
 
+  <!-- ========== IMAGE LIGHTBOX ========== -->
+  <div id="imageLightbox" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 sm:p-8">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeLightbox()"></div>
+    <button onclick="closeLightbox()"
+      class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-10 transition"
+      aria-label="关闭">
+      <i class="fas fa-times"></i>
+    </button>
+    <img id="lightboxImage" src="" alt=""
+      class="relative z-10 max-w-full max-h-[90vh] object-contain rounded-md shadow-2xl">
+  </div>
+
   <!-- ========== ABOUT ========== -->
   <section id="about" class="py-16 md:py-24 border-t border-border">
     <div class="max-w-6xl mx-auto px-6">
@@ -486,7 +498,7 @@
                   <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>重塑产品团队定位与工作模式，管理4名产品经理与2名设计师
                   </li>
                   <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>诊断产品-研发协同瓶颈，主导设计权责流程与规范</li>
-                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>负责电商、门店、智能巡店产品的建设和迭代</li>
+                  <li class="flex gap-2"><span class="text-primary mt-0.5 shrink-0">·</span>全面负责产品团队能力建模、工作流搭建与输出标准</li>
                 </ul>
               </div>
             </div>
@@ -742,6 +754,7 @@
         icon: 'fas fa-exchange-alt',
         iconBg: 'bg-primary/10',
         title: '电商分账系统建设',
+        image: '电商分账系统建设.png',
         role: '产品经理兼项目负责人',
         period: '2025.11 — 2026.04',
         tags: ['C端', '财务', '0→1'],
@@ -758,6 +771,7 @@
         icon: 'fas fa-robot',
         iconBg: 'bg-primary/10',
         title: '星座社交AI功能模块建设',
+        image: '星座社交AI功能模块建设.png',
         role: '产品经理兼项目负责人',
         period: '2025.02 — 2025.10',
         tags: ['AI', 'C端', '社交'],
@@ -774,6 +788,7 @@
         icon: 'fas fa-store',
         iconBg: 'bg-primary/10',
         title: '线上商城和服务体系从0到1开发',
+        image: '线上商城和服务体系从0到1开发.png',
         role: '产品经理兼项目负责人',
         period: '2024.07 — 2024.12',
         tags: ['C端', '电商', '0→1'],
@@ -790,6 +805,7 @@
         icon: 'fas fa-users-cog',
         iconBg: 'bg-primary/10',
         title: '人事系统从0到1开发',
+        image: '人事系统从0到1开发.png',
         role: '产品经理兼项目负责人',
         period: '2023.05 — 2023.11',
         tags: ['内部产品', 'HRMS', '0→1'],
@@ -806,6 +822,7 @@
         icon: 'fas fa-language',
         iconBg: 'bg-primary/10',
         title: '香港繁体内容产品从0到1开发',
+        image: '香港繁体内容产品从0到1开发.png',
         role: '产品经理兼项目负责人',
         period: '2021.08 — 2022.08',
         tags: ['B2B2C', '本地化', '0→1'],
@@ -864,6 +881,10 @@
             </div>
             <span class="tag-chip tag-chip-accent text-xs self-start md:self-auto">${p.role}</span>
           </div>
+          <!-- 项目图片 -->
+          <div class="w-full h-40 sm:h-44 md:h-52 overflow-hidden bg-muted">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+          </div>
           <!-- 内容区 -->
           <div class="px-6 py-5">
             <p class="text-sm text-muted-foreground leading-relaxed mb-4">${p.summary}</p>
@@ -903,6 +924,14 @@
           </button>
         </div>
         <div class="p-6 space-y-5">
+          <!-- 项目图片 -->
+          <div class="w-full rounded-lg overflow-hidden bg-muted border border-border cursor-zoom-in group/img" onclick="openLightbox('${p.image}','${p.title}')">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-auto object-cover group-hover/img:opacity-90 transition">
+            <div class="hidden sm:flex items-center justify-center gap-1.5 text-xs text-muted-foreground mt-2">
+              <i class="fas fa-search-plus"></i>
+              <span>点击图片放大查看</span>
+            </div>
+          </div>
           <div class="flex flex-wrap gap-2">
             ${p.tags.map(t => `<span class="tag-chip">${t}</span>`).join('')}
           </div>
@@ -930,13 +959,36 @@
       document.body.style.overflow = '';
     }
 
+    // ===== 图片放大 Lightbox =====
+    function openLightbox(src, alt) {
+      const lightbox = document.getElementById('imageLightbox');
+      const img = document.getElementById('lightboxImage');
+      img.src = src;
+      img.alt = alt || '';
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+    }
+
+    function closeLightbox() {
+      const lightbox = document.getElementById('imageLightbox');
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+    }
+
     // ===== 初始化 =====
     renderFeatured();
     renderProjects();
 
-    // 键盘 ESC 关闭 modal
+    // 键盘 ESC 关闭 modal / lightbox
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        const lightbox = document.getElementById('imageLightbox');
+        if (!lightbox.classList.contains('hidden')) {
+          closeLightbox();
+        } else {
+          closeModal();
+        }
+      }
     });
 
     // ===== 原有交互 =====
